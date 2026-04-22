@@ -43,4 +43,9 @@ public class HomeController {
         return modelAndView;
     }
 
+    @GetMapping("/")
+    public String redirect() {
+    return "redirect:/home";
+}
+
 }
