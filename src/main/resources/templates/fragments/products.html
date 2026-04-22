@@ -15,14 +15,62 @@
         <div class="row panel-footer">
             <div th:inline="text" class="col-md-2">Price: [[${product.price}]] $</div>
             <div th:inline="text" class="col-md-9">In Stock: [[${product.quantity}]]</div>
-            <a th:href="@{'/shoppingCart/addProduct/{id}'(id=${product.id})}" class="col-md-1"
-               sec:authorize="isAuthenticated()" th:if="${product.quantity}>0">
-                <button type="button" class="btn btn-primary" th:text="Buy">Buy</button>
-            </a>
+            <button type="button" class="btn btn-primary col-md-1" th:if="${product.quantity}>0"
+                 th:onclick="'addToCartAjax(' + ${product.id} + ', \'' + ${product.name} + '\'); return false;'"
+                th:text="Buy">Buy</button>
         </div>
         <br></br>
     </div>
+
+    <script>
+         function addToCartAjax(productId, productName) {
+            $.ajax({
+                url: '/shoppingCart/addProduct/' + productId,
+                type: 'POST',
+                success: function(data) {
+                    if (data.success) {
+                        
+                        showToast(productName + ' added to your cart! 🛒');
+
+                    } else {
+                        
+                        window.location.href = '/login?redirect=/home';
+                    }
+                },
+                error: function(xhr) {
+                    window.location.href = '/login?redirect=/home'
+                    }
+                
+            });
+            return false;
+        }
+
+         function showToast(message, type) {
+            type = type || 'success';
+            var toastClass = type === 'error' ? 'toast-error' : 'toast-success';
+            var toast = $('<div class="toast ' + toastClass + '">' + 
+             '<span>' + message + '</span> <br/>' +
+             '<a href="/shoppingCart" class="toast-link">Go to Cart</a>' +
+             '</div>');
+            
+            $('body').append(toast);
+            
+            // Animate in
+            setTimeout(function() {
+                toast.addClass('show');
+            }, 10);
+            
+            // Remove after 5 seconds
+            setTimeout(function() {
+                toast.removeClass('show');
+                setTimeout(function() {
+                    toast.remove();
+                }, 300);
+            }, 5000);
+        }
+    </script>
 </div>
 
+    
 </body>
 </html>

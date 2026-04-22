@@ -29,3 +29,46 @@ a:hover, a:focus, a:active {
     display: block;
     text-align: center;
 }
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 16px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 9999;
+    max-width: 400px;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast-success {
+    background-color: #28a745;
+}
+
+.toast-error {
+    background-color: #dc3545;
+}
+
+.toast-link {
+    color: white;
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.toast-link:hover {
+    opacity: 0.8;
+    color: white;
+}
